@@ -1,0 +1,25 @@
+import React from "react"
+import * as QueryString from "query-string"
+import { useCookies } from "react-cookie"
+import { Redirect } from "react-router-dom"
+
+function Login(props: any) {
+  const params = QueryString.parse(props.location.search)
+  const [, setCookie] = useCookies(["access_token"])
+
+  console.log("props", props)
+  console.log("params", params)
+  if (params.access_token) {
+    setCookie("access_token", params.access_token)
+  }
+
+  return (
+    <div className="app">
+      <header className="app-header">
+        <a href="http://localhost:4000/spotify/login">Log in with Spotify</a>
+        {params.access_token && <Redirect to="/app" />}
+      </header>
+    </div>
+  )
+}
+export default Login

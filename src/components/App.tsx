@@ -1,69 +1,46 @@
-// Import necessary dependencies
-import React, { useEffect, useState } from "react";
-// Create interface for user object (TypeScript only)
-interface UserUI {
-  id: string;
-  username: string;
-  name: string;
-  email: string;
-}
-// Create App component
+import React from "react"
+import { Navbar, Button, Alignment } from "@blueprintjs/core"
+import { Route, Link, useHistory } from "react-router-dom"
+import Me from "./Me"
+import SpotifyWrapper from "./SpotifyWrapper"
+import styled from "styled-components"
+import Playlists from "./Playlists"
+import Playlist from "./Playlist"
+
+const AppFrame = styled.div`
+  padding: 10px;
+`
 function App() {
-  // Prepare state hook for welcome message
-  const [welcomeMessage, setWelcomeMessage] = useState("");
-  // Prepare state hook for users list
-  // Note: <UserUI[]> is for TypeScript
-  // It specifies the shape of usersList state
-  const [usersList, setUsersList] = useState<UserUI[]>([]);
-  // Create async function for fetching welcome message
-  const fetchMessage = async () => {
-    // Use Fetch API to fetch '/api' endpoint
-    const message = await fetch("/api").then((res) => res.text()); // process incoming data
-    // Update welcomeMessage state
-    setWelcomeMessage(message);
-  };
-  // Use useEffect to call fetchMessage() on initial render
-  useEffect(() => {
-    fetchMessage();
-  }, []);
-  // Create async function for fetching users list
-  const fetchUsers = async () => {
-    const users = await fetch("/users/all").then((res) => res.json()); // Process the incoming data
-    // Update usersList state
-    setUsersList(users);
-  };
+  const history = useHistory()
+
+  const redirect = (path: string) => {
+    history.push(path)
+  }
+
   return (
-    <div className="app">
-      <header className="app-header">
-        {/* Display welcome message */}
-        <p>{welcomeMessage}</p>
-        {/* Button to fetch users data */}
-        <button onClick={fetchUsers}>Fetch users</button>
-        {/* Display table of users after fetching users data */}
-        {usersList.length > 0 && (
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Name</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usersList.map((user: UserUI) => (
-                <tr key={user.id}>
-                  <td>{user.id}</td>
-                  <td>{user.username}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
-      </header>
-    </div>
-  );
+    <SpotifyWrapper>
+      <Navbar>
+        <Navbar.Group align={Alignment.LEFT}>
+          <Navbar.Heading>stype.org</Navbar.Heading>
+          <Navbar.Divider />
+          <Button
+            minimal={true}
+            icon="home"
+            text="Home"
+            onClick={() => redirect("/app")}
+          />
+        </Navbar.Group>
+      </Navbar>
+      <Route exact path="/app">
+        <Link to="/app/me">Me</Link>
+        <Link to="/app/playlists">Playlists</Link>
+      </Route>
+      <AppFrame>
+        <Route path="/app/me" component={Me} />
+        <Route path="/app/playlists" component={Playlists} />
+        <Route path="/app/playlist/:playlist_id" component={Playlist} />
+      </AppFrame>
+    </SpotifyWrapper>
+  )
 }
-export default App;
+export default App
