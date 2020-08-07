@@ -15,14 +15,36 @@ function json(response: any) {
 }
 
 const SpotifyWrapper: FunctionComponent = ({ children }) => {
-  const [cookies] = useCookies(["access_token"])
-  const token = cookies.access_token
-  const headers = {
-    Authorization: "Bearer " + token,
+  const [cookies] = useCookies(["access_token", "refresh_token", "expires_at"])
+
+  const refreshToken = () => {
+    console.log("REFRESHING")
+    const token = cookies.access_token
+    return token
+  }
+
+  const getToken = () => {
+    const now = new Date().getTime()
+
+    if (cookies.expires_at < now) {
+      return refreshToken()
+    }
+
+    return cookies.access_token
+  }
+
+  const getHeaders = (token: string) => {
+    return {
+      Authorization: "Bearer " + token,
+    }
   }
 
   const get = (url: string) => {
-    return fetch(url, { headers }).then(status).then(json)
+    return getToken()
+      .then(getHeaders)
+      .then((headers: Headers) => fetch(url, { headers }))
+      .then(status)
+      .then(json)
   }
 
   const getMe = () => get("https://api.spotify.com/v1/me")

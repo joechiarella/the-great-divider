@@ -5,12 +5,16 @@ import { Redirect } from "react-router-dom"
 
 function Login(props: any) {
   const params = QueryString.parse(props.location.search)
-  const [, setCookie] = useCookies(["access_token"])
+  const [, setCookie] = useCookies([
+    "access_token",
+    "refresh_token",
+    "expires_at",
+  ])
 
-  console.log("props", props)
-  console.log("params", params)
   if (params.access_token) {
     setCookie("access_token", params.access_token)
+    setCookie("refresh_token", params.refresh_token)
+    setCookie("expires_at", new Date().getTime() + 4 * 60 * 60)
   }
 
   return (
