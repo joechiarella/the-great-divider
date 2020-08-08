@@ -62,8 +62,10 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
   const getMyPlaylists = () => get("https://api.spotify.com/v1/me/playlists")
   const getPlaylist = (id: string) =>
     get(`https://api.spotify.com/v1/playlists/${id}`)
+  const getArtist = (id: string) =>
+    get(`https://api.spotify.com/v1/artists/${id}`)
 
-  const api = { getMe, getMyPlaylists, getPlaylist }
+  const api = { getMe, getMyPlaylists, getPlaylist, getArtist }
 
   return <SpotifyProvider value={api}>{children}</SpotifyProvider>
 }

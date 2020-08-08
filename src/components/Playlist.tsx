@@ -2,7 +2,7 @@ import React, { useContext, useCallback } from "react"
 import { Card, Spinner, HTMLTable } from "@blueprintjs/core"
 import { useAsync } from "react-async"
 import SpotifyContext from "./SpotifyContext"
-import { useParams } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 
 function Playlist() {
   const { playlist_id } = useParams()
@@ -34,7 +34,11 @@ function Playlist() {
                 return (
                   <tr key={track.track.id}>
                     <td>{track.track.name}</td>
-                    <td>{track.track.artists[0].name}</td>
+                    <td>
+                      <Link to={`/app/artist/${track.track.artists[0].id}`}>
+                        {track.track.artists[0].name}
+                      </Link>
+                    </td>
                     <td>{track.track.album.name}</td>
                   </tr>
                 )

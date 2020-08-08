@@ -58,10 +58,18 @@ export interface PlaylistFull {
   tracks: Paging<PlaylistTrack>
 }
 
+export interface ArtistFull {
+  id: string
+  name: string
+  popularity: number
+  genres: string[]
+}
+
 type SpotifyContextType = {
   getMe: () => Promise<Me>
   getMyPlaylists: () => Promise<Paging<PlaylistSimp>>
   getPlaylist: (id: string) => Promise<PlaylistFull>
+  getArtist: (id: string) => Promise<ArtistFull>
 }
 
 const SpotifyContext = React.createContext<SpotifyContextType | undefined>(

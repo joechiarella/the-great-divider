@@ -6,6 +6,7 @@ import SpotifyWrapper from "./SpotifyWrapper"
 import styled from "styled-components"
 import Playlists from "./Playlists"
 import Playlist from "./Playlist"
+import Artist from "./Artist"
 
 const AppFrame = styled.div`
   padding: 10px;
@@ -39,6 +40,7 @@ function App() {
         <Route path="/app/me" component={Me} />
         <Route path="/app/playlists" component={Playlists} />
         <Route path="/app/playlist/:playlist_id" component={Playlist} />
+        <Route path="/app/artist/:artist_id" component={Artist} />
       </AppFrame>
     </SpotifyWrapper>
   )
