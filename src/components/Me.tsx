@@ -7,7 +7,7 @@ function Me() {
   const { getMe } = useContext(SpotifyContext)!
   const { data, error, isPending } = useAsync(getMe)
   return (
-    <Card elevation={2}>
+    <Card elevation={0}>
       {isPending && <Spinner />}
       {error && <div>Error!</div>}
       {data && (

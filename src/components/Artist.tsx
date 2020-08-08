@@ -1,5 +1,5 @@
 import React, { useContext, useCallback } from "react"
-import { Card, Spinner, HTMLTable } from "@blueprintjs/core"
+import { Card, Spinner } from "@blueprintjs/core"
 import { useAsync } from "react-async"
 import SpotifyContext from "./SpotifyContext"
 import { useParams } from "react-router-dom"
@@ -21,9 +21,8 @@ function Artist() {
       {error && <div>Error!</div>}
       {data && (
         <div>
+          <h1>{data.name}</h1>
           <dl>
-            <dt>Name</dt>
-            <dd>{data.name}</dd>
             <dt>Popularity</dt>
             <dd>{data.popularity}</dd>
             <dt>Genres</dt>
