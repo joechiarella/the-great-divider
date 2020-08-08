@@ -14,7 +14,7 @@ function Login(props: any) {
   if (params.access_token) {
     setCookie("access_token", params.access_token)
     setCookie("refresh_token", params.refresh_token)
-    setCookie("expires_at", new Date().getTime() + 4 * 60 * 60)
+    setCookie("expires_at", new Date().getTime() + 1000 * 60 * 60)
   }
 
   return (

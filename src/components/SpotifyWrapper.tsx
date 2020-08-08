@@ -15,22 +15,33 @@ function json(response: any) {
 }
 
 const SpotifyWrapper: FunctionComponent = ({ children }) => {
-  const [cookies] = useCookies(["access_token", "refresh_token", "expires_at"])
+  const [cookies, setCookie] = useCookies([
+    "access_token",
+    "refresh_token",
+    "expires_at",
+  ])
 
   const refreshToken = () => {
-    console.log("REFRESHING")
-    const token = cookies.access_token
-    return token
+    return fetch(
+      `http://localhost:3000/spotify/refresh?refresh_token=${cookies.refresh_token}`,
+      { mode: "same-origin" }
+    )
+      .then(status)
+      .then(json)
+      .then((resp) => {
+        const newToken = resp.access_token
+        setCookie("access_token", newToken)
+        setCookie("expires_at", new Date().getTime() + 1000 * 60 * 60)
+        return newToken
+      })
   }
 
   const getToken = () => {
     const now = new Date().getTime()
-
-    if (cookies.expires_at < now) {
+    if (parseInt(cookies.expires_at, 10) < now) {
       return refreshToken()
     }
-
-    return cookies.access_token
+    return Promise.resolve(cookies.access_token)
   }
 
   const getHeaders = (token: string) => {
@@ -42,7 +53,7 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
   const get = (url: string) => {
     return getToken()
       .then(getHeaders)
-      .then((headers: Headers) => fetch(url, { headers }))
+      .then((headers) => fetch(url, { headers }))
       .then(status)
       .then(json)
   }

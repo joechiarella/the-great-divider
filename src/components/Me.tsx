@@ -6,7 +6,6 @@ import SpotifyContext from "./SpotifyContext"
 function Me() {
   const { getMe } = useContext(SpotifyContext)!
   const { data, error, isPending } = useAsync(getMe)
-
   return (
     <Card elevation={2}>
       {isPending && <Spinner />}
