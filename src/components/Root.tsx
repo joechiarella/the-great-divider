@@ -11,6 +11,24 @@ const GlobalStyle = createGlobalStyle`
     height: 100%;
     background-color: #202b33;
   }
+
+  dl {
+    display: flex;
+    flex-flow: row wrap;
+    border-width: 1px 1px 0 0;
+  }
+  dt {
+    flex-basis: 20%;
+    padding: 2px 4px;
+    text-align: right;
+    font-weight: 600;
+  }
+  dd {
+    flex-basis: 70%;
+    flex-grow: 1;
+    margin: 0;
+    padding: 2px 4px;
+  }
 `
 
 // Create App component

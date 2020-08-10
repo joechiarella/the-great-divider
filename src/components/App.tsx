@@ -1,6 +1,6 @@
 import React from "react"
 import { Navbar, Button, Alignment } from "@blueprintjs/core"
-import { Route, Link, useHistory } from "react-router-dom"
+import { Route, Link, useHistory, Switch } from "react-router-dom"
 import Me from "./Me"
 import SpotifyWrapper from "./SpotifyWrapper"
 import styled from "styled-components"
@@ -32,15 +32,23 @@ function App() {
           />
         </Navbar.Group>
       </Navbar>
-      <Route exact path="/app">
-        <Link to="/app/me">Me</Link>
-        <Link to="/app/playlists">Playlists</Link>
-      </Route>
       <AppFrame>
-        <Route path="/app/me" component={Me} />
-        <Route path="/app/playlists" component={Playlists} />
-        <Route path="/app/playlist/:playlist_id" component={Playlist} />
-        <Route path="/app/artist/:artist_id" component={Artist} />
+        <Switch>
+          <Route path="/app/me" component={Me} />
+          <Route path="/app/playlists" component={Playlists} />
+          <Route path="/app/playlist/:playlist_id" component={Playlist} />
+          <Route path="/app/artist/:artist_id" component={Artist} />
+          <Route path="/app">
+            <ul>
+              <li>
+                <Link to="/app/me">Me</Link>
+              </li>
+              <li>
+                <Link to="/app/playlists">Playlists</Link>
+              </li>
+            </ul>
+          </Route>
+        </Switch>
       </AppFrame>
     </SpotifyWrapper>
   )
