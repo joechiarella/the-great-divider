@@ -3,7 +3,6 @@ import { Card } from "@blueprintjs/core"
 import SpotifyContext from "./SpotifyContext"
 import { Link } from "react-router-dom"
 import AsyncRender from "./AsyncRender"
-import styled from "styled-components"
 import Tile, { Gallery } from "./Tile"
 
 function Categories() {

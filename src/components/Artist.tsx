@@ -1,9 +1,14 @@
 import React, { useContext, useCallback } from "react"
-import { Card, HTMLTable } from "@blueprintjs/core"
+import { Card, HTMLTable, H1, H2, Tag } from "@blueprintjs/core"
 import SpotifyContext from "./SpotifyContext"
 import { useParams } from "react-router-dom"
 import TrackList from "./TrackList"
 import AsyncRender from "./AsyncRender"
+import styled from "styled-components"
+
+const Genre = styled(Tag)`
+  margin-right: 10px;
+`
 
 function Artist() {
   const { artist_id } = useParams()
@@ -31,7 +36,7 @@ function Artist() {
       <AsyncRender fn={loadArtist}>
         {(data) => (
           <div>
-            <h1>{data.name}</h1>
+            <H1>{data.name}</H1>
             <img width="150" alt="idk" src={data.images[0].url} />
 
             <dl>
@@ -40,18 +45,24 @@ function Artist() {
               <dt>Followers</dt>
               <dd>{data.followers.total}</dd>
               <dt>Genres</dt>
-              <dd>{data.genres.join(", ")}</dd>
+              <dd>
+                {data.genres.map((genre) => (
+                  <Genre round={false} minimal={true} key={genre}>
+                    {genre}
+                  </Genre>
+                ))}
+              </dd>
             </dl>
           </div>
         )}
       </AsyncRender>
 
-      <h2>Top Tracks</h2>
+      <H2>Top Tracks</H2>
       <AsyncRender fn={loadTopTracks}>
         {(data) => <TrackList tracks={data.tracks} />}
       </AsyncRender>
 
-      <h2>Albums</h2>
+      <H2>Albums</H2>
       <AsyncRender fn={loadAlbums}>
         {(data) => (
           <div>

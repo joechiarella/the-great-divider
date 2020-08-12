@@ -33,33 +33,35 @@ function App() {
             text="Home"
             onClick={() => redirect("/app")}
           />
+          <Button
+            minimal={true}
+            icon="intersection"
+            text="Artists"
+            onClick={() => redirect("/app/followed")}
+          />
+          <Button
+            minimal={true}
+            icon="numbered-list"
+            text="Playlists"
+            onClick={() => redirect("/app/playlists")}
+          />
+          <Button
+            minimal={true}
+            icon="group-objects"
+            text="Categories"
+            onClick={() => redirect("/app/categories")}
+          />
         </Navbar.Group>
       </Navbar>
       <AppFrame>
         <Switch>
-          <Route path="/app/me" component={Me} />
           <Route path="/app/playlists" component={Playlists} />
           <Route path="/app/categories" component={Categories} />
           <Route path="/app/playlist/:playlist_id" component={Playlist} />
           <Route path="/app/artist/:artist_id" component={Artist} />
           <Route path="/app/category/:category_id" component={Category} />
           <Route path="/app/followed" component={Followed} />
-          <Route path="/app">
-            <ul>
-              <li>
-                <Link to="/app/me">Me</Link>
-              </li>
-              <li>
-                <Link to="/app/playlists">Playlists</Link>
-              </li>
-              <li>
-                <Link to="/app/categories">Categories</Link>
-              </li>
-              <li>
-                <Link to="/app/followed">Followed Artists</Link>
-              </li>
-            </ul>
-          </Route>
+          <Route path="/app" component={Me} />
         </Switch>
       </AppFrame>
     </SpotifyWrapper>
