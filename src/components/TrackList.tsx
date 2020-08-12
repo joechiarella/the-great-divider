@@ -20,6 +20,7 @@ function TrackList({ tracks }: TrackListProps) {
       </thead>
       <tbody>
         {tracks.map((track) => {
+          if (!track) return ""
           return (
             <tr key={track.id}>
               <td>{track.name}</td>

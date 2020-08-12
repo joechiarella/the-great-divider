@@ -7,6 +7,9 @@ import styled from "styled-components"
 import Playlists from "./Playlists"
 import Playlist from "./Playlist"
 import Artist from "./Artist"
+import Categories from "./Categories"
+import Category from "./Category"
+import Followed from "./Followed"
 
 const AppFrame = styled.div`
   padding: 10px;
@@ -36,8 +39,11 @@ function App() {
         <Switch>
           <Route path="/app/me" component={Me} />
           <Route path="/app/playlists" component={Playlists} />
+          <Route path="/app/categories" component={Categories} />
           <Route path="/app/playlist/:playlist_id" component={Playlist} />
           <Route path="/app/artist/:artist_id" component={Artist} />
+          <Route path="/app/category/:category_id" component={Category} />
+          <Route path="/app/followed" component={Followed} />
           <Route path="/app">
             <ul>
               <li>
@@ -45,6 +51,12 @@ function App() {
               </li>
               <li>
                 <Link to="/app/playlists">Playlists</Link>
+              </li>
+              <li>
+                <Link to="/app/categories">Categories</Link>
+              </li>
+              <li>
+                <Link to="/app/followed">Followed Artists</Link>
               </li>
             </ul>
           </Route>

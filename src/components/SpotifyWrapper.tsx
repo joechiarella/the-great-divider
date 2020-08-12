@@ -72,6 +72,12 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     get(
       `https://api.spotify.com/v1/artists/${artistId}/albums?country=from_token`
     )
+  const getCategories = () =>
+    get("https://api.spotify.com/v1/browse/categories")
+  const getCategoryPlaylists = (categoryId: string) =>
+    get(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`)
+  const getFollowedArtists = () =>
+    get(`https://api.spotify.com/v1/me/following?type=artist`)
 
   const api = {
     getMe,
@@ -80,6 +86,9 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     getArtist,
     getTopTracks,
     getArtistAlbums,
+    getCategories,
+    getCategoryPlaylists,
+    getFollowedArtists,
   }
 
   return <SpotifyProvider value={api}>{children}</SpotifyProvider>

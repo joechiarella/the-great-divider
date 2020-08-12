@@ -1,9 +1,9 @@
-import React, { useContext, useCallback, useMemo } from "react"
-import { Card, Spinner } from "@blueprintjs/core"
-import { useAsync } from "react-async"
-import SpotifyContext, { Track } from "./SpotifyContext"
+import React, { useContext, useCallback } from "react"
+import { Card } from "@blueprintjs/core"
+import SpotifyContext from "./SpotifyContext"
 import { useParams } from "react-router-dom"
 import TrackList from "./TrackList"
+import AsyncRender from "./AsyncRender"
 
 function Playlist() {
   const { playlist_id } = useParams()
@@ -14,17 +14,14 @@ function Playlist() {
     getPlaylist,
   ])
 
-  const { data, error, isPending } = useAsync(loadPlaylist)
-
-  const tracks: Track[] = useMemo(() => {
-    return data ? data.tracks.items.map((track) => track?.track) : []
-  }, [data])
-
   return (
     <Card elevation={2}>
-      {isPending && <Spinner />}
-      {error && <div>Error!</div>}
-      {data && <TrackList tracks={tracks} />}
+      <AsyncRender fn={loadPlaylist}>
+        {(data) => {
+          const tracks = data.tracks.items.map((track) => track?.track)
+          return <TrackList tracks={tracks} />
+        }}
+      </AsyncRender>
     </Card>
   )
 }

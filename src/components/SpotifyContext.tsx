@@ -29,6 +29,7 @@ export interface Paging<T> {
 export interface PlaylistSimp {
   id: string
   name: string
+  images: Image[]
 }
 
 export interface AlbumSimp {
@@ -53,7 +54,7 @@ export interface Track {
   preview_url: string
 }
 
-export interface TrackHolder {
+export interface Tracks {
   tracks: Track[]
 }
 
@@ -80,13 +81,34 @@ export interface ArtistFull {
   images: Image[]
 }
 
+export interface Category {
+  id: string
+  name: string
+  icons: Image[]
+}
+
+export interface Categories {
+  categories: Paging<Category>
+}
+
+export interface Playlists {
+  playlists: Paging<PlaylistSimp>
+}
+
+export interface Artists {
+  artists: Paging<ArtistFull>
+}
+
 type SpotifyContextType = {
   getMe: () => Promise<Me>
   getMyPlaylists: () => Promise<Paging<PlaylistSimp>>
   getPlaylist: (id: string) => Promise<PlaylistFull>
   getArtist: (id: string) => Promise<ArtistFull>
-  getTopTracks: (artistId: string) => Promise<TrackHolder>
+  getTopTracks: (artistId: string) => Promise<Tracks>
   getArtistAlbums: (artistId: string) => Promise<Paging<AlbumSimp>>
+  getCategories: () => Promise<Categories>
+  getCategoryPlaylists: (categoryId: string) => Promise<Playlists>
+  getFollowedArtists: () => Promise<Artists>
 }
 
 const SpotifyContext = React.createContext<SpotifyContextType | undefined>(
