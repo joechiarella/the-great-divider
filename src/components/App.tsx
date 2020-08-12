@@ -35,7 +35,7 @@ function App() {
           />
           <Button
             minimal={true}
-            icon="intersection"
+            icon="search-around"
             text="Artists"
             onClick={() => redirect("/app/followed")}
           />
