@@ -99,6 +99,8 @@ export interface Artists {
   artists: Paging<ArtistFull>
 }
 
+type CheckTrackType = [string, boolean]
+
 type SpotifyContextType = {
   getMe: () => Promise<Me>
   getMyPlaylists: () => Promise<Paging<PlaylistSimp>>
@@ -109,6 +111,7 @@ type SpotifyContextType = {
   getCategories: () => Promise<Categories>
   getCategoryPlaylists: (categoryId: string) => Promise<Playlists>
   getFollowedArtists: () => Promise<Artists>
+  checkSavedTracks: (ids: string[]) => Promise<boolean[]>
 }
 
 const SpotifyContext = React.createContext<SpotifyContextType | undefined>(

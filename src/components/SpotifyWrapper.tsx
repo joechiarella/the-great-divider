@@ -30,8 +30,9 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
       .then(json)
       .then((resp) => {
         const newToken = resp.access_token
-        setCookie("access_token", newToken)
-        setCookie("expires_at", new Date().getTime() + 1000 * 60 * 60)
+        const options = { path: "/" }
+        setCookie("access_token", newToken, options)
+        setCookie("expires_at", new Date().getTime() + 1000 * 60 * 60, options)
         return newToken
       })
   }
@@ -78,6 +79,8 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     get(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists`)
   const getFollowedArtists = () =>
     get(`https://api.spotify.com/v1/me/following?type=artist`)
+  const checkSavedTracks = (ids: string[]) =>
+    get(`https://api.spotify.com/v1/me/tracks/contains?ids=${ids.join(",")}`)
 
   const api = {
     getMe,
@@ -89,6 +92,7 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     getCategories,
     getCategoryPlaylists,
     getFollowedArtists,
+    checkSavedTracks,
   }
 
   return <SpotifyProvider value={api}>{children}</SpotifyProvider>
