@@ -17,6 +17,7 @@ import {
   refCount,
   take,
 } from "rxjs/operators"
+import styled from "styled-components"
 
 type CheckType = {
   id: string
@@ -27,6 +28,10 @@ type SavedProps = {
   idCheck: string
   obs: Observable<CheckType>
 }
+
+const InlineSwitch = styled(Switch)`
+  margin-bottom: 0;
+`
 
 function Saved({ idCheck, obs }: SavedProps) {
   const [loading, setLoading] = useState(true)
@@ -44,7 +49,7 @@ function Saved({ idCheck, obs }: SavedProps) {
   return (
     <>
       {loading && <Spinner size={15} />}
-      {!loading && <Switch checked={checked} />}
+      {!loading && <InlineSwitch readOnly={true} checked={checked} />}
     </>
   )
 }
