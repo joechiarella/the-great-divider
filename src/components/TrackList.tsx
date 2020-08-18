@@ -1,28 +1,11 @@
-import React, { useContext, useCallback, useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { HTMLTable, Spinner, Switch } from "@blueprintjs/core"
-import SpotifyContext, { Track } from "./SpotifyContext"
+import { Track } from "./SpotifyContext"
 import { Link } from "react-router-dom"
-import { useAsync } from "react-async"
-import { from, zip, Subject, Observable } from "rxjs"
-import {
-  map,
-  bufferCount,
-  mergeMap,
-  tap,
-  flatMap,
-  mergeAll,
-  concatAll,
-  multicast,
-  filter,
-  refCount,
-  take,
-} from "rxjs/operators"
-import styled from "styled-components"
+import { Observable } from "rxjs"
 
-type CheckType = {
-  id: string
-  check: boolean
-}
+import styled from "styled-components"
+import useSavedTrackService, { CheckType } from "../services/SavedTrackService"
 
 type SavedProps = {
   idCheck: string
@@ -34,17 +17,17 @@ const InlineSwitch = styled(Switch)`
 `
 
 function Saved({ idCheck, obs }: SavedProps) {
+  const { checkTrack } = useSavedTrackService()
+
   const [loading, setLoading] = useState(true)
   const [checked, setChecked] = useState(true)
-  obs
-    .pipe(
-      filter(({ id }) => idCheck === id),
-      take(1)
-    )
-    .subscribe(({ check }) => {
+
+  useEffect(() => {
+    checkTrack(idCheck, obs, ({ saved }) => {
       setLoading(false)
-      setChecked(check)
+      setChecked(saved)
     })
+  }, [idCheck])
 
   return (
     <>
@@ -59,21 +42,8 @@ type TrackListProps = {
 }
 
 function TrackList({ tracks }: TrackListProps) {
-  const { checkSavedTracks } = useContext(SpotifyContext)!
-  const subject = new Subject<CheckType>()
-  const obs = from(tracks).pipe(
-    map((track) => track.id),
-    bufferCount(50),
-    mergeMap((trackIds) =>
-      zip(
-        from(trackIds),
-        from(checkSavedTracks(trackIds)).pipe(flatMap((d) => from(d)))
-      )
-    ),
-    map(([id, check]) => ({ id, check })),
-    multicast(subject),
-    refCount()
-  )
+  const { checkTracks } = useSavedTrackService()
+  const obs = checkTracks(tracks)
 
   return (
     <HTMLTable condensed={true}>
