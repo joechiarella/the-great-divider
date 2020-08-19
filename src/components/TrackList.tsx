@@ -2,28 +2,24 @@ import React, { useState, useEffect } from "react"
 import { HTMLTable, Spinner, Switch } from "@blueprintjs/core"
 import { Track } from "./SpotifyContext"
 import { Link } from "react-router-dom"
-import { Observable } from "rxjs"
-
 import styled from "styled-components"
 import useSavedTrackService, { CheckType } from "../services/SavedTrackService"
 
 type SavedProps = {
   idCheck: string
-  obs: Observable<CheckType>
+  checkTrack: (idToCheck: string, callback: (arg: CheckType) => void) => void
 }
 
 const InlineSwitch = styled(Switch)`
   margin-bottom: 0;
 `
 
-function Saved({ idCheck, obs }: SavedProps) {
-  const { checkTrack } = useSavedTrackService()
-
+function Saved({ idCheck, checkTrack }: SavedProps) {
   const [loading, setLoading] = useState(true)
   const [checked, setChecked] = useState(true)
 
   useEffect(() => {
-    checkTrack(idCheck, obs, ({ saved }) => {
+    checkTrack(idCheck, ({ saved }) => {
       setLoading(false)
       setChecked(saved)
     })
@@ -43,7 +39,7 @@ type TrackListProps = {
 
 function TrackList({ tracks }: TrackListProps) {
   const { checkTracks } = useSavedTrackService()
-  const obs = checkTracks(tracks)
+  const checkTrack = checkTracks(tracks)
 
   return (
     <HTMLTable condensed={true}>
@@ -62,7 +58,7 @@ function TrackList({ tracks }: TrackListProps) {
           return (
             <tr key={track.id}>
               <td>
-                <Saved idCheck={track.id} obs={obs} />
+                <Saved idCheck={track.id} checkTrack={checkTrack} />
               </td>
               <td>{track.name}</td>
               <td>

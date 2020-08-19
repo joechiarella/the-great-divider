@@ -1,22 +1,12 @@
 import { useContext } from "react"
 import SpotifyContext, { Track } from "../components/SpotifyContext"
-import {
-  from,
-  zip,
-  Subject,
-  Observable,
-  partition,
-  merge,
-  ReplaySubject,
-} from "rxjs"
+import { from, zip, Observable, partition, merge, ReplaySubject } from "rxjs"
 import {
   map,
   bufferCount,
   mergeMap,
   tap,
   flatMap,
-  mergeAll,
-  concatAll,
   multicast,
   filter,
   refCount,
@@ -57,30 +47,28 @@ const useSavedTrackService = () => {
     )
 
     const merged$ = merge(cachedResults$, freshResults$).pipe(
-      tap(console.log),
       multicast(subject),
       refCount()
     )
 
     console.log("cache size", Object.keys(cache).length)
 
-    return merged$
+    const checkTrack = (
+      idToCheck: string,
+      callback: (arg: CheckType) => void
+    ) => {
+      merged$
+        .pipe(
+          filter(({ id }) => idToCheck === id),
+          take(1)
+        )
+        .subscribe(callback)
+    }
+
+    return checkTrack
   }
 
-  const checkTrack = (
-    idToCheck: string,
-    obs: Observable<CheckType>,
-    callback: (arg: CheckType) => void
-  ) => {
-    obs
-      .pipe(
-        filter(({ id }) => idToCheck === id),
-        take(1)
-      )
-      .subscribe(callback)
-  }
-
-  return { checkTracks, checkTrack }
+  return { checkTracks }
 }
 
 export default useSavedTrackService
