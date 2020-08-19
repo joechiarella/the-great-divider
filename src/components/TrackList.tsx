@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext, useCallback } from "react"
 import { HTMLTable, Spinner, Switch } from "@blueprintjs/core"
-import { Track } from "./SpotifyContext"
+import SpotifyContext, { Track } from "./SpotifyContext"
 import { Link } from "react-router-dom"
 import styled from "styled-components"
 import useSavedTrackService, { CheckType } from "../services/SavedTrackService"
+import { useAsync } from "react-async"
 
 type SavedProps = {
-  idCheck: string
+  trackId: string
   checkTrack: (idToCheck: string, callback: (arg: CheckType) => void) => void
 }
 
@@ -14,21 +15,35 @@ const InlineSwitch = styled(Switch)`
   margin-bottom: 0;
 `
 
-function Saved({ idCheck, checkTrack }: SavedProps) {
+function Saved({ trackId, checkTrack }: SavedProps) {
+  const { saveTracks, unsaveTracks } = useContext(SpotifyContext)!
+
   const [loading, setLoading] = useState(true)
   const [checked, setChecked] = useState(true)
 
+  const toggleSavedTrack = useCallback(() => {
+    if (!checked) {
+      setChecked(true)
+      return saveTracks([trackId])
+    } else {
+      setChecked(false)
+      return unsaveTracks([trackId])
+    }
+  }, [trackId, checked])
+
+  const { run } = useAsync({ deferFn: toggleSavedTrack })
+
   useEffect(() => {
-    checkTrack(idCheck, ({ saved }) => {
+    checkTrack(trackId, ({ saved }) => {
       setLoading(false)
       setChecked(saved)
     })
-  }, [idCheck])
+  }, [trackId])
 
   return (
     <>
       {loading && <Spinner size={15} />}
-      {!loading && <InlineSwitch readOnly={true} checked={checked} />}
+      {!loading && <InlineSwitch onChange={run} checked={checked} />}
     </>
   )
 }
@@ -58,7 +73,7 @@ function TrackList({ tracks }: TrackListProps) {
           return (
             <tr key={track.id}>
               <td>
-                <Saved idCheck={track.id} checkTrack={checkTrack} />
+                <Saved trackId={track.id} checkTrack={checkTrack} />
               </td>
               <td>{track.name}</td>
               <td>

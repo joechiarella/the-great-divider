@@ -59,6 +59,22 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
       .then(json)
   }
 
+  const put = (url: string) => {
+    return getToken()
+      .then(getHeaders)
+      .then((headers) => fetch(url, { method: "PUT", headers }))
+      .then(status)
+      .then(json)
+  }
+
+  const del = (url: string) => {
+    return getToken()
+      .then(getHeaders)
+      .then((headers) => fetch(url, { method: "DELETE", headers }))
+      .then(status)
+      .then(json)
+  }
+
   const getMe = () => get("https://api.spotify.com/v1/me")
   const getMyPlaylists = () => get("https://api.spotify.com/v1/me/playlists")
   const getPlaylist = (id: string) =>
@@ -81,6 +97,10 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     get(`https://api.spotify.com/v1/me/following?type=artist`)
   const checkSavedTracks = (ids: string[]) =>
     get(`https://api.spotify.com/v1/me/tracks/contains?ids=${ids.join(",")}`)
+  const saveTracks = (ids: string[]) =>
+    put(`https://api.spotify.com/v1/me/tracks?ids=${ids.join(",")}`)
+  const unsaveTracks = (ids: string[]) =>
+    del(`https://api.spotify.com/v1/me/tracks?ids=${ids.join(",")}`)
 
   const api = {
     getMe,
@@ -93,6 +113,8 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     getCategoryPlaylists,
     getFollowedArtists,
     checkSavedTracks,
+    saveTracks,
+    unsaveTracks,
   }
 
   return <SpotifyProvider value={api}>{children}</SpotifyProvider>

@@ -112,6 +112,8 @@ type SpotifyContextType = {
   getCategoryPlaylists: (categoryId: string) => Promise<Playlists>
   getFollowedArtists: () => Promise<Artists>
   checkSavedTracks: (ids: string[]) => Promise<boolean[]>
+  saveTracks: (ids: string[]) => Promise<void>
+  unsaveTracks: (ids: string[]) => Promise<void>
 }
 
 const SpotifyContext = React.createContext<SpotifyContextType | undefined>(

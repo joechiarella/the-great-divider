@@ -23,7 +23,7 @@ exports.spotifyLogin = async (req, res) => {
 
   // your application requests authorization
   var scope =
-    "user-read-private user-read-email user-follow-read user-library-read"
+    "user-read-private user-read-email user-follow-read user-library-read user-library-modify"
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       querystring.stringify({
