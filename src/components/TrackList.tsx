@@ -75,7 +75,9 @@ function TrackList({ tracks }: TrackListProps) {
               <td>
                 <Saved trackId={track.id} checkTrack={checkTrack} />
               </td>
-              <td>{track.name}</td>
+              <td>
+                <Link to={`/app/track/${track.id}`}>{track.name}</Link>
+              </td>
               <td>
                 <Link to={`/app/artist/${track.artists[0].id}`}>
                   {track.artists[0].name}

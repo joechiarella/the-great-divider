@@ -10,6 +10,7 @@ import Artist from "./Artist"
 import Categories from "./Categories"
 import Category from "./Category"
 import Followed from "./Followed"
+import Track from "./Track"
 
 const AppFrame = styled.div`
   padding: 10px;
@@ -59,6 +60,7 @@ function App() {
           <Route path="/app/categories" component={Categories} />
           <Route path="/app/playlist/:playlist_id" component={Playlist} />
           <Route path="/app/artist/:artist_id" component={Artist} />
+          <Route path="/app/track/:track_id" component={Track} />
           <Route path="/app/category/:category_id" component={Category} />
           <Route path="/app/followed" component={Followed} />
           <Route path="/app" component={Me} />

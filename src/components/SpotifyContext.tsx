@@ -99,7 +99,59 @@ export interface Artists {
   artists: Paging<ArtistFull>
 }
 
-type CheckTrackType = [string, boolean]
+export interface TimeInterval {
+  start: number
+  duration: number
+  confidence: number
+}
+
+export interface Section {
+  start: number
+  duration: number
+  confidence: number
+  loudness: number
+  tempo: number
+  tempo_confidence: number
+  key: number
+  key_confidence: number
+  mode: number
+  mode_confidence: number
+  time_signature: number
+  time_signature_confidence: number
+}
+
+export interface Segment {
+  start: number
+  duration: number
+  confidence: number
+  loudness_start: number
+  loudness_max: number
+  loudness_max_time: number
+  loudness_end: number
+  pitches: number[]
+  timbre: number[]
+}
+
+export interface TrackAnalysis {
+  key: number
+  key_confidence: number
+  loudness: number
+  mode: number
+  mode_confidence: number
+  tempo: number
+  tempo_confidence: number
+  time_signature: number
+  time_signature_confidence: number
+}
+
+export interface AudioAnalysis {
+  bars: TimeInterval[]
+  beats: TimeInterval[]
+  sections: Section[]
+  segments: Segment[]
+  tatums: TimeInterval[]
+  track: TrackAnalysis
+}
 
 type SpotifyContextType = {
   getMe: () => Promise<Me>
@@ -114,6 +166,8 @@ type SpotifyContextType = {
   checkSavedTracks: (ids: string[]) => Promise<boolean[]>
   saveTracks: (ids: string[]) => Promise<void>
   unsaveTracks: (ids: string[]) => Promise<void>
+  getTrack: (id: string) => Promise<Track>
+  getAudioAnalysis: (id: string) => Promise<AudioAnalysis>
 }
 
 const SpotifyContext = React.createContext<SpotifyContextType | undefined>(

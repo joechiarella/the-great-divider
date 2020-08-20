@@ -1,5 +1,5 @@
 import React, { useContext, useCallback } from "react"
-import { Card } from "@blueprintjs/core"
+import { Card, H1 } from "@blueprintjs/core"
 import SpotifyContext from "./SpotifyContext"
 import { useParams } from "react-router-dom"
 import TrackList from "./TrackList"
@@ -19,7 +19,12 @@ function Playlist() {
       <AsyncRender fn={loadPlaylist}>
         {(data) => {
           const tracks = data.tracks.items.map((track) => track?.track)
-          return <TrackList tracks={tracks} />
+          return (
+            <>
+              <H1>{data.name}</H1>
+              <TrackList tracks={tracks} />
+            </>
+          )
         }}
       </AsyncRender>
     </Card>
