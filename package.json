@@ -24,6 +24,7 @@
     "express": "^4.17.1",
     "helmet": "^3.23.3",
     "nodemon": "^2.0.4",
+    "prop-types": "^15.7.2",
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-async": "^10.0.1",
@@ -59,5 +60,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/prop-types": "^15.7.3"
   }
 }

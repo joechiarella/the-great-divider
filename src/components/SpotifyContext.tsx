@@ -153,6 +153,21 @@ export interface AudioAnalysis {
   track: TrackAnalysis
 }
 
+export interface AudioFeatures {
+  key: number
+  mode: number
+  time_signature: number
+  acousticness: number
+  danceability: number
+  energy: number
+  instrumentalness: number
+  liveness: number
+  loudness: number
+  speechiness: number
+  valence: number
+  tempo: number
+}
+
 type SpotifyContextType = {
   getMe: () => Promise<Me>
   getMyPlaylists: () => Promise<Paging<PlaylistSimp>>
@@ -168,6 +183,7 @@ type SpotifyContextType = {
   unsaveTracks: (ids: string[]) => Promise<void>
   getTrack: (id: string) => Promise<Track>
   getAudioAnalysis: (id: string) => Promise<AudioAnalysis>
+  getAudioFeatures: (id: string) => Promise<AudioFeatures>
 }
 
 const SpotifyContext = React.createContext<SpotifyContextType | undefined>(

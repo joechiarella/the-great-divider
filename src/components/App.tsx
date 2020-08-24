@@ -1,6 +1,6 @@
 import React from "react"
 import { Navbar, Button, Alignment } from "@blueprintjs/core"
-import { Route, Link, useHistory, Switch } from "react-router-dom"
+import { Route, useHistory, Switch } from "react-router-dom"
 import Me from "./Me"
 import SpotifyWrapper from "./SpotifyWrapper"
 import styled from "styled-components"

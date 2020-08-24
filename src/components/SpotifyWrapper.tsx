@@ -105,6 +105,8 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     get(`https://api.spotify.com/v1/tracks/${id}`)
   const getAudioAnalysis = (id: string) =>
     get(`https://api.spotify.com/v1/audio-analysis/${id}`)
+  const getAudioFeatures = (id: string) =>
+    get(`https://api.spotify.com/v1/audio-features/${id}`)
 
   const api = {
     getMe,
@@ -121,6 +123,7 @@ const SpotifyWrapper: FunctionComponent = ({ children }) => {
     unsaveTracks,
     getTrack,
     getAudioAnalysis,
+    getAudioFeatures,
   }
 
   return <SpotifyProvider value={api}>{children}</SpotifyProvider>

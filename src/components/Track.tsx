@@ -48,12 +48,18 @@ function Key({ data }: KeyData) {
 
 function Track() {
   const { track_id } = useParams()
-  const { getTrack, getAudioAnalysis } = useContext(SpotifyContext)!
+  const { getTrack, getAudioAnalysis, getAudioFeatures } = useContext(
+    SpotifyContext
+  )!
 
   const loadTrack = useCallback(() => getTrack(track_id), [track_id, getTrack])
   const loadAudioAnalysis = useCallback(() => getAudioAnalysis(track_id), [
     track_id,
     getAudioAnalysis,
+  ])
+  const loadAudioFeatures = useCallback(() => getAudioFeatures(track_id), [
+    track_id,
+    getAudioFeatures,
   ])
 
   return (
@@ -88,6 +94,29 @@ function Track() {
               <dd>{data.track.tempo}</dd>
               <dt>Time Signature</dt>
               <dd>{data.track.time_signature} / 4</dd>
+            </dl>
+          </div>
+        )}
+      </AsyncRender>
+      <AsyncRender fn={loadAudioFeatures}>
+        {(data) => (
+          <div>
+            <H2>Audio Features</H2>
+            <dl>
+              <dt>Acousticness</dt>
+              <dd>{data.acousticness}</dd>
+              <dt>Danceability</dt>
+              <dd>{data.danceability}</dd>
+              <dt>Energy</dt>
+              <dd>{data.energy}</dd>
+              <dt>Instrumentalness</dt>
+              <dd>{data.instrumentalness}</dd>
+              <dt>Liveness</dt>
+              <dd>{data.liveness}</dd>
+              <dt>Speechiness</dt>
+              <dd>{data.speechiness}</dd>
+              <dt>Valence</dt>
+              <dd>{data.valence}</dd>
             </dl>
           </div>
         )}
