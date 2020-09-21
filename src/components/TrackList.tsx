@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 import useSavedTrackService, { CheckType } from "../services/SavedTrackService"
 import { useAsync } from "react-async"
+import useIntersect from "../services/useIntersect"
 
 type SavedProps = {
   trackId: string
@@ -50,46 +51,73 @@ function Saved({ trackId, checkTrack }: SavedProps) {
 
 type TrackListProps = {
   tracks: Track[]
+  loadMore?: () => void
+  hasMore?: boolean
+  isLoadingMore?: boolean
 }
 
-function TrackList({ tracks }: TrackListProps) {
+function TrackList({
+  tracks,
+  loadMore = () => {},
+  hasMore = false,
+  isLoadingMore = false,
+}: TrackListProps) {
   const { checkTracks } = useSavedTrackService()
   const checkTrack = checkTracks(tracks)
 
+  const [ref, entry] = useIntersect({
+    threshold: 0.1,
+  })
+
+  useEffect(() => {
+    if (
+      entry?.intersectionRatio &&
+      entry?.intersectionRatio > 0.1 &&
+      hasMore &&
+      !isLoadingMore
+    ) {
+      console.log("LOAD MORE")
+      loadMore()
+    }
+  }, [entry, hasMore, isLoadingMore, loadMore])
+
   return (
-    <HTMLTable condensed={true}>
-      <thead>
-        <tr>
-          <th>Saved</th>
-          <th>Track</th>
-          <th>Artist</th>
-          <th>Album</th>
-          <th>Popularity</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tracks.map((track) => {
-          if (!track) return ""
-          return (
-            <tr key={track.id}>
-              <td>
-                <Saved trackId={track.id} checkTrack={checkTrack} />
-              </td>
-              <td>
-                <Link to={`/app/track/${track.id}`}>{track.name}</Link>
-              </td>
-              <td>
-                <Link to={`/app/artist/${track.artists[0].id}`}>
-                  {track.artists[0].name}
-                </Link>
-              </td>
-              <td>{track.album.name}</td>
-              <td>{track.popularity}</td>
-            </tr>
-          )
-        })}
-      </tbody>
-    </HTMLTable>
+    <>
+      <HTMLTable condensed={true}>
+        <thead>
+          <tr>
+            <th>Saved</th>
+            <th>Track</th>
+            <th>Artist</th>
+            <th>Album</th>
+            <th>Popularity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tracks.map((track) => {
+            if (!track) return ""
+            return (
+              <tr key={track.id}>
+                <td>
+                  <Saved trackId={track.id} checkTrack={checkTrack} />
+                </td>
+                <td>
+                  <Link to={`/app/track/${track.id}`}>{track.name}</Link>
+                </td>
+                <td>
+                  <Link to={`/app/artist/${track.artists[0].id}`}>
+                    {track.artists[0].name}
+                  </Link>
+                </td>
+                <td>{track.album.name}</td>
+                <td>{track.popularity}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </HTMLTable>
+      {hasMore && !isLoadingMore && <div ref={ref}>"LOADING MORE"</div>}
+    </>
   )
 }
 

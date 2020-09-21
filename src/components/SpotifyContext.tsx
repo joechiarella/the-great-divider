@@ -184,6 +184,10 @@ type SpotifyContextType = {
   getTrack: (id: string) => Promise<Track>
   getAudioAnalysis: (id: string) => Promise<AudioAnalysis>
   getAudioFeatures: (id: string) => Promise<AudioFeatures>
+  getPlaylistTracks: (
+    id: string,
+    offset?: number
+  ) => Promise<Paging<PlaylistTrack>>
 }
 
 const SpotifyContext = React.createContext<SpotifyContextType | undefined>(
